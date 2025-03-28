@@ -9,11 +9,6 @@
    $data=json_decode(file_get_contents("php://input"), true);
           $rental_id = $data['rental_id'] ?? null;
 
-    if (!$rental_id) {
-     echo json_encode(["error" => "rental_id is required"]);
-     exit;
-    }
-
    $sql='DELETE FROM rental WHERE id=?';
 
          $stsm=$conn->prepare($sql);
@@ -22,7 +17,7 @@
      if ($stsm->execute()) {
        echo json_encode(["message" => "deleted successful"]);
      } else {
-       echo json_encode(["error" => "failed delete"]);
+       echo json_encode(["error" => "delete feiled"]);
      }
 
 mysqli_close($conn);

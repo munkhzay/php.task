@@ -16,11 +16,10 @@
         $result=$stsm->get_result();
         $categories=$result->fetch_all(MYSQLI_ASSOC);
 
- if(empty($categories)){
-   
-   echo json_encode(["message"=>"no categories found"]);
- };
-    echo json_encode(['categories'=>$categories]);
+   if(empty($categories)){
+       echo json_encode(["message"=>"no categories found"]);
+     };
+       echo json_encode(['categories'=>$categories]);
 
   mysqli_close($conn)
 

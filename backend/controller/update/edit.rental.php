@@ -7,12 +7,12 @@ header('Access-Control-Allow-Headers: Content-Type');
 
 $data=json_decode(file_get_contents('php://input'), true);
 
-   $owner_email = $data['owner_email'];
-   $id=$data['id'];
-   $rental_date=$data['rental_date'];
-   $rent=$data['rent'];
-   $mode=$data['mode'];
-   $category_name = $data['category_name'];
+   $owner_email = $data['owner_email'] ?? null;
+   $id=$data['id'] ?? null;
+   $rental_date=$data['rental_date']?? null;
+   $rent=$data['rent']?? null;
+   $mode=$data['mode']?? null;
+   $category_name = $data['category_name']?? null;
 
 $sql="SELECT rental_date, owner_email, rent, mode, category_name FROM rental WHERE id = ?";
 
@@ -21,18 +21,13 @@ $sql="SELECT rental_date, owner_email, rent, mode, category_name FROM rental WHE
    $stsm->execute();
    $result=$stsm->get_result();
 
-if($result->num_rows===0){
-   echo json_encode(["message" => "no rental found "]);
-   exit;
-}
-
 $oldData=$result->fetch_assoc();
 
-   $up_rental_date = isset($data['rental_date']) && !empty($data['rental_date']) ? $data['rental_date'] : $oldData['rental_date'];
-   $up_owner_email = isset($data['owner_email'])&& !empty($data['owner_email']) ? $data['owner_email'] : $oldData['owner_email'];
-   $up_rent = isset($data['rent'])&& !empty($data['rent']) ? $data['rent'] : $oldData['rent'];
-   $up_mode = isset($data['mode']) && !empty($data['mode']) ? $data['mode'] : $oldData['mode'];
-   $up_category_name = isset($data['category_name'])&& !empty($data['category_name']) ? $data['category_name'] : $oldData['category_name'];
+   $up_rental_date =  !empty($data['rental_date']) ? $data['rental_date'] : $oldData['rental_date'];
+   $up_owner_email = !empty($data['owner_email']) ? $data['owner_email'] : $oldData['owner_email'];
+   $up_rent =  !empty($data['rent']) ? $data['rent'] : $oldData['rent'];
+   $up_mode =  !empty($data['mode']) ? $data['mode'] : $oldData['mode'];
+   $up_category_name = !empty($data['category_name']) ? $data['category_name'] : $oldData['category_name'];
 
 $updateSql = "UPDATE rental SET rental_date = ?, owner_email = ?, rent = ?, mode = ?, category_name= ?  WHERE id = ?";
 
